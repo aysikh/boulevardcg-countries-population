@@ -5,7 +5,7 @@ function CountiesPopulationChart() {
     const [chartData, setChartData] = useState(null);
     const [selectedContinent, setSelectedContinent] = useState("");
     const [selectedSort, setSelectedSort] = useState("");
-    const [isLinearScale, setIsLinearScale] = useState(true); 
+    const [isLinearScale, setIsLinearScale] = useState(true);
     const chartRef = useRef(null);
 
     useEffect(() => {
@@ -54,7 +54,7 @@ function CountiesPopulationChart() {
         if (chartData) {
             const data = selectedContinent ? chartData[selectedContinent] : [];
 
-            const chartConfig = {
+            const initialChartConfig = {
                 type: "bar",
                 data: {
                     labels: data.map((country) => country.flag + " " + country.name),
@@ -84,7 +84,7 @@ function CountiesPopulationChart() {
                             },
                         },
                         y: {
-                            type: isLinearScale ? 'linear' : 'logarithmic',
+                            type: isLinearScale ? "linear" : "logarithmic",
                             title: {
                                 display: true,
                                 text: "Population",
@@ -100,7 +100,7 @@ function CountiesPopulationChart() {
 
             const chartCanvas = document.getElementById("chart");
             if (chartCanvas) {
-                chartRef.current = new Chart(chartCanvas, chartConfig);
+                chartRef.current = new Chart(chartCanvas, initialChartConfig);
             }
         }
     }, [chartData, selectedContinent, isLinearScale]);
@@ -114,25 +114,17 @@ function CountiesPopulationChart() {
     };
 
     const handleSelectedLogChange = (event) => {
-        setIsLinearScale(event.target.value === 'linear');
-
-        setChartData((prevConfig) => {
-            const newOptions = { ...prevConfig.options };
-            if (newOptions.scales && newOptions.scales.y) {
-              newOptions.scales.y.type = event.target.value;
-            }
-            return { ...prevConfig, options: newOptions };
-          });
-    }
+        setIsLinearScale(event.target.value === "linear");
+    };
 
     return (
         <div className="container mx-auto">
             {chartData && (
                 <div className="flex justify-center my-4 relative inline-block">
-                    <select className="px-4 py-2 border border-gray-300 rounded-md mx-4"
-                            value={selectedContinent}
-                            onChange={handleSelectedContinentChange}>
-
+                    <select
+                        className="px-4 py-2 border border-gray-300 rounded-md mx-4"
+                        value={selectedContinent}
+                        onChange={handleSelectedContinentChange}>
                         <option value="">Select Continent</option>
 
                         {Object.keys(chartData).map((continent) => (
@@ -142,18 +134,21 @@ function CountiesPopulationChart() {
                         ))}
                     </select>
 
-                    <select className="px-4 py-2 border border-gray-300 rounded-md"
-                            value={selectedSort}
-                            onChange={handleSelectedSortChange}>
-
+                    <select
+                        className="px-4 py-2 border border-gray-300 rounded-md"
+                        value={selectedSort}
+                        onChange={handleSelectedSortChange}
+                        disabled={!selectedContinent}>
                         <option value="">Select Sort</option>
                         <option value="asc">Sort Ascending</option>
                         <option value="desc">Sort Descending</option>
                     </select>
 
-                    <select className="px-4 py-2 border border-gray-300 rounded-md mx-4"
-                            value={isLinearScale ? 'linear' : 'logarithmic'}
-                            onChange={handleSelectedLogChange}>
+                    <select
+                        className="px-4 py-2 border border-gray-300 rounded-md mx-4"
+                        value={isLinearScale ? "linear" : "logarithmic"}
+                        onChange={handleSelectedLogChange}
+                        disabled={!selectedContinent}>
                         <option value="linear">Linear Scale</option>
                         <option value="logarithmic">Logarithmic Scale</option>
                     </select>
