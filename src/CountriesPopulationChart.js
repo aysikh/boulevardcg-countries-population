@@ -94,10 +94,12 @@ function CountiesPopulationChart() {
                 },
             };
 
+            // Destroy the previous chart instance
             if (chartRef.current) {
                 chartRef.current.destroy();
             }
 
+            // Create a new chart instance
             const chartCanvas = document.getElementById("chart");
             if (chartCanvas) {
                 chartRef.current = new Chart(chartCanvas, initialChartConfig);
@@ -105,15 +107,18 @@ function CountiesPopulationChart() {
         }
     }, [chartData, selectedContinent, isLinearScale]);
 
+    // Handle change in selected continent
     const handleSelectedContinentChange = (event) => {
         setSelectedContinent(event.target.value);
     };
 
+    // Handle change in selected sort
     const handleSelectedSortChange = (event) => {
         setSelectedSort(event.target.value);
     };
 
-    const handleSelectedLogChange = (event) => {
+    // Handle change in selected scale
+    const handleSelectedScaleChange = (event) => {
         setIsLinearScale(event.target.value === "linear");
     };
 
@@ -147,7 +152,7 @@ function CountiesPopulationChart() {
                     <select
                         className="px-4 py-2 border border-gray-300 rounded-md mx-4"
                         value={isLinearScale ? "linear" : "logarithmic"}
-                        onChange={handleSelectedLogChange}
+                        onChange={handleSelectedScaleChange}
                         disabled={!selectedContinent}>
                         <option value="linear">Linear Scale</option>
                         <option value="logarithmic">Logarithmic Scale</option>
